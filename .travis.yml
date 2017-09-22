@@ -55,3 +55,4 @@ script:
   # Second, HTTP.
   - ./examples/hellogrpc/e2e-test.sh java
   - ./examples/hellogrpc/e2e-test.sh go
+  - ./examples/hellogrpc/e2e-test.sh py
