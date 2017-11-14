@@ -80,7 +80,7 @@ py_library(
 
 git_repository(
     name = "org_pubref_rules_protobuf",
-    commit = "4cc90ab2b9f4d829b9706221d4167bc7fb3bd247",  # patched v0.8.1 (Sep 27 2017)
+    commit = "6361b3fd5813bf688a05364bb836502a068a71ac",  # patched v0.8.1 (Sep 27 2017)
     remote = "https://github.com/pubref/rules_protobuf.git",
 )
 
@@ -114,16 +114,27 @@ _java_image_repos()
 
 git_repository(
     name = "io_bazel_rules_go",
-    commit = "ae70411645c171b2056d38a6a959e491949f9afe",
+    commit = "6d900bc95ae678bec5c91031b8e987957d2a7f93",
     remote = "https://github.com/bazelbuild/rules_go.git",
 )
 
 load(
     "@io_bazel_rules_go//go:def.bzl",
-    "go_repositories",
+    "go_register_toolchains",
+    "go_rules_dependencies",
+    "go_repository",
 )
 
-go_repositories()
+go_rules_dependencies()
+
+go_register_toolchains()
+
+load(
+    "@io_bazel_rules_go//proto:def.bzl",
+    "proto_register_toolchains",
+)
+
+proto_register_toolchains()
 
 # We use go_image to build a sample service
 load(
@@ -133,9 +144,9 @@ load(
 
 _go_image_repos()
 
-load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_repositories")
+# load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_repositories")
 
-go_proto_repositories()
+# go_proto_repositories()
 
 git_repository(
     name = "io_bazel_rules_python",
@@ -208,3 +219,139 @@ load(
 )
 
 _controller_pip_install()
+
+# This corresponds to this Git repo:
+# https://github.com/kubernetes/apimachinery
+go_repository(
+    name = "io_k8s_apimachinery",
+    build_file_proto_mode = "disable",
+    commit = "18a564baac720819100827c16fdebcadb05b2d0d",
+    importpath = "k8s.io/apimachinery",
+)
+
+go_repository(
+    name = "com_github_golang_glog",
+    commit = "23def4e6c14b4da8ac2ed8007337bc5eb5007998",
+    importpath = "github.com/golang/glog",
+)
+
+go_repository(
+    name = "com_github_gogo_protobuf",
+    commit = "117892bf1866fbaa2318c03e50e40564c8845457",
+    importpath = "github.com/gogo/protobuf",
+)
+
+go_repository(
+    name = "com_github_json_iterator_go",
+    commit = "aed5a81f09330b8d254a117fb853e2f886f1cb3b",
+    importpath = "github.com/json-iterator/go",
+)
+
+go_repository(
+    name = "com_github_ghodss_yaml",
+    commit = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7",
+    importpath = "github.com/ghodss/yaml",
+)
+
+go_repository(
+    name = "in_gopkg_yaml_v2",
+    commit = "eb3733d160e74a9c7e442f435eb3bea458e1d19f",
+    importpath = "gopkg.in/yaml.v2",
+)
+
+go_repository(
+    name = "io_k8s_client_go",
+    commit = "72e1c2a1ef30b3f8da039e92d4a6a1f079f374e8",
+    importpath = "k8s.io/client-go",
+)
+
+go_repository(
+    name = "io_k8s_api",
+    commit = "218912509d74a117d05a718bb926d0948e531c20",
+    importpath = "k8s.io/api",
+)
+
+go_repository(
+    name = "com_github_juju_ratelimit",
+    commit = "59fac5042749a5afb9af70e813da1dd5474f0167",
+    importpath = "github.com/juju/ratelimit",
+)
+
+http_archive(
+    name = "io_kubernetes_build",
+    sha256 = "8e49ac066fbaadd475bd63762caa90f81cd1880eba4cc25faa93355ef5fa2739",
+    strip_prefix = "repo-infra-e26fc85d14a1d3dc25569831acc06919673c545a",
+    urls = ["https://github.com/kubernetes/repo-infra/archive/e26fc85d14a1d3dc25569831acc06919673c545a.tar.gz"],
+)
+
+go_repository(
+    name = "in_gopkg_inf_v0",
+    commit = "3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4",
+    importpath = "gopkg.in/inf.v0",
+)
+
+go_repository(
+    name = "com_github_davecgh_go_spew",
+    commit = "ecdeabc65495df2dec95d7c4a4c3e021903035e5",
+    importpath = "github.com/davecgh/go-spew",
+)
+
+go_repository(
+    name = "io_k8s_kube_openapi",
+    commit = "39a7bf85c140f972372c2a0d1ee40adbf0c8bfe1",
+    importpath = "k8s.io/kube-openapi",
+)
+
+go_repository(
+    name = "com_github_google_gofuzz",
+    commit = "24818f796faf91cd76ec7bddd72458fbced7a6c1",
+    importpath = "github.com/google/gofuzz",
+)
+
+go_repository(
+    name = "com_github_go_openapi_spec",
+    commit = "84b5bee7bcb76f3d17bcbaf421bac44bd5709ca6",
+    importpath = "github.com/go-openapi/spec",
+)
+
+go_repository(
+    name = "com_github_peterbourgon_diskv",
+    commit = "53ef9e43a0bc608e737e6bfed35207ad9cb1ad54",
+    importpath = "github.com/peterbourgon/diskv",
+)
+
+go_repository(
+    name = "com_github_gregjones_httpcache",
+    commit = "22a0b1feae53974ed4cfe27bcce70dba061cc5fd",
+    importpath = "github.com/gregjones/httpcache",
+)
+
+go_repository(
+    name = "com_github_spf13_pflag",
+    commit = "97afa5e7ca8a08a383cb259e06636b5e2cc7897f",
+    importpath = "github.com/spf13/pflag",
+)
+
+go_repository(
+    name = "com_github_go_openapi_swag",
+    commit = "cf0bdb963811675a4d7e74901cefc7411a1df939",
+    importpath = "github.com/go-openapi/swag",
+)
+
+go_repository(
+    name = "com_github_emicklei_go_restful",
+    commit = "2dd44038f0b95ae693b266c5f87593b5d2fdd78d",
+    importpath = "github.com/emicklei/go-restful",
+)
+
+go_repository(
+    name = "com_github_go_openapi_jsonreference",
+    commit = "36d33bfe519efae5632669801b180bf1a245da3b",
+    importpath = "github.com/go-openapi/jsonreference",
+)
+
+go_repository(
+    name = "com_github_go_openapi_jsonpointer",
+    commit = "779f45308c19820f1a69e9a4cd965f496e0da10f",
+    importpath = "github.com/go-openapi/jsonpointer",
+)
